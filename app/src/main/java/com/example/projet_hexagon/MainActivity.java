@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText _X, _Y;
     private TextView _error, _exp;
     public RadioButton easy,intermediate, hard;
-    public String lg;
+    public static String lg;
 
 
     //https://jsfiddle.net/xL53zs6q/
@@ -50,16 +50,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
     }
-    public void setMyData(String l) {
-        lg=l;
-    }
 
 
     @Override
     protected void onResume()
     {
         super.onResume();
-
+    _exp.setText(lg);
         _play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
