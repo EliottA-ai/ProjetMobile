@@ -40,10 +40,12 @@ public class Game extends AppCompatActivity {
     private List<HexaCase> input;
     private List<HexaCase> testb;
     private int width, numberofbomb;
-    private Button _button = null;
+    private ImageView _button = null;
     private int[] test;
     private int _X, _Y, _All;
-    private static TextView _end;
+    private static ImageView _end;
+    public static int nbb;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class Game extends AppCompatActivity {
 
         _All = _X * _Y - (_Y / 2);
 
+
         ImageView image = new ImageView(this);
 
         hexaRcv = (RecyclerView) findViewById(R.id.hexa_rcv);
@@ -87,6 +90,7 @@ public class Game extends AppCompatActivity {
         input = new ArrayList<>();
 
         numberofbomb = getnumberofbomb(_X, _Y, Integer.parseInt(Diff));
+        nbb=numberofbomb;
         //numberofbomb=2;
 
         int j = 0;
@@ -176,7 +180,6 @@ public class Game extends AppCompatActivity {
 
 
     }
-
 
 
     @Override
@@ -302,10 +305,10 @@ public class Game extends AppCompatActivity {
     }*/
     public static void end(boolean end) {
         if (end == false) {
-            _end.setText("PERDU");
+            _end.setBackgroundResource(R.drawable.lose);
         }
         if (end == true) {
-            _end.setText("GAGNE");
+            _end.setBackgroundResource(R.drawable.win);
         }
     }
 }

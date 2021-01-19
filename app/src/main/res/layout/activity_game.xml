@@ -10,23 +10,22 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/hexa_dp" />
 
-    <Button
+    <ImageView
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_width="match_parent"
+        android:layout_height="101dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="156dp"
         android:layout_marginBottom="38dp"
-        android:text="Replay" />
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Replay"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
 
-    <TextView
+    <ImageView
         android:id="@+id/lost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="78dp"
         android:layout_marginBottom="322dp"
         android:textAlignment="center"
         android:textColor="#FF0000"

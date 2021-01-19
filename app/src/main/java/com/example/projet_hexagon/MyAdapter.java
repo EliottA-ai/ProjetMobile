@@ -132,7 +132,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public boolean onLongClick(View v) {
                 // TODO Auto-generated method stub
                 holder.txtHeader.setBackgroundResource(R.drawable.drapeau);
-                if (values.get(position).getBomb() == true) tot+=1;
+                if (values.get(position).getBomb() == true)
+                {
+                    tot+=1;
+                }
+                else tot-=1;
+                if(tot==Game.nbb)
+                {
+                    Game.end(true);
+                }
                 if(holder.txtHeader.getBackground()==holder.txtHeader.getResources().getDrawable(R.drawable.drapeau))
                 {
                     holder.txtHeader.setBackgroundResource(R.drawable.hexagonpng);
@@ -147,6 +155,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             @Override
             public void onClick(View v) {
+
 
                     if (values.get(position).getBomb() == true)
                     {

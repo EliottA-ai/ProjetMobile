@@ -24,11 +24,25 @@ public class BlankFragment extends Fragment {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.languagefragment, container, false);
             language = view.findViewById(R.id.language);
-
             return view;
         }
 
+    @Override
+    public void onResume() {
 
+        super.onResume();
+        language.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    ((MainActivity)getActivity()).setlanguage("Choisissez votre Difficulté :", "Facile", "Moyen", "Difficile","Jouer","Rejouer","Perdu","Gagné");
+
+                } else {
+                    ((MainActivity)getActivity()).setlanguage("Choose your Difficulty :","Easy","Intermediate","Hard","Play","Replay","Lose","Win");
+
+                }
+            }
+        });
+    }
     }
 
 

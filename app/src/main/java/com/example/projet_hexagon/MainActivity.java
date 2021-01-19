@@ -18,11 +18,11 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private Button _play =null;
-    private ImageView plus_x=null,plus_y=null,minus_x=null,minus_y=null;
+    private ImageView plus_x=null,plus_y=null,minus_x=null,minus_y=null,_setting;
     private EditText _X, _Y;
     private TextView _error, _exp;
     public RadioButton easy,intermediate, hard;
-    public static String lg;
+    public String win,lose,replay;
 
 
     //https://jsfiddle.net/xL53zs6q/
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         intermediate=findViewById(R.id.Intermediate);
         hard=findViewById(R.id.Hard);
         _exp=findViewById(R.id.exp);
+        _setting=findViewById(R.id.setting);
     }
 
     @Override
@@ -51,13 +52,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+public void setlanguage(String s,String e, String i, String h,String p,String r, String l, String w)
+{
+    _exp.setText(s);
+    hard.setText(h);
+    easy.setText(e);
+    intermediate.setText(i);
+    _play.setText(p);
+    win=w;
+    lose=l;
+    replay=l;
 
+}
     @Override
     protected void onResume()
     {
         super.onResume();
-    _exp.setText(lg);
-        _play.setOnClickListener(new View.OnClickListener() {
+
+        _setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
@@ -112,13 +124,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*_play.setOnClickListener(new View.OnClickListener() {
+        _play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, Game.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 i.putExtra("X",_X.getText().toString());
                 i.putExtra("Y",_Y.getText().toString());
+                i.putExtra("win",win);
+                i.putExtra("lose",lose);
+                i.putExtra("replay",replay);
                 i.putExtra("Diff",String.valueOf(getdifficulty()));
                 if((Integer.parseInt(_X.getText().toString()) >=3 && Integer.parseInt(_X.getText().toString()) <=9) && (Integer.parseInt(_Y.getText().toString()) >=3 && Integer.parseInt(_Y.getText().toString()) <=18))
                 {
@@ -127,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else { _error.setText("Size problem (verify your X and Y value)"); }
             }
-        });*/
+        });
     }
 
     public int getdifficulty()
