@@ -2,8 +2,10 @@ package com.example.projet_hexagon;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,8 +20,9 @@ public class MainActivity extends AppCompatActivity {
     private Button _play =null;
     private ImageView plus_x=null,plus_y=null,minus_x=null,minus_y=null;
     private EditText _X, _Y;
-    private TextView _error;
+    private TextView _error, _exp;
     public RadioButton easy,intermediate, hard;
+    public String lg;
 
 
     //https://jsfiddle.net/xL53zs6q/
@@ -39,11 +42,24 @@ public class MainActivity extends AppCompatActivity {
         easy=findViewById(R.id.Easy);
         intermediate=findViewById(R.id.Intermediate);
         hard=findViewById(R.id.Hard);
+        _exp=findViewById(R.id.exp);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+    }
+    public void setMyData(String l) {
+        lg=l;
+    }
+
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
         _play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,14 +67,10 @@ public class MainActivity extends AppCompatActivity {
                 BlankFragment fragment = new  BlankFragment();
                 fragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().add(R.id.fragmcont, fragment).commit();
+
             }
         });
-    }
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
         minus_x.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
