@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +13,10 @@ import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,9 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView _error, _exp;
     public RadioButton easy,intermediate, hard;
     public String win,lose,replay;
+    private ProgressBar p;
+    private Calculation c;
+    private View v;
 
 
-    //https://jsfiddle.net/xL53zs6q/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
         hard=findViewById(R.id.Hard);
         _exp=findViewById(R.id.exp);
         _setting=findViewById(R.id.setting);
+        p=findViewById(R.id.p);
+        v=findViewById(R.id.loadbackground);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
+        c = new Calculation();
     }
 
 public void setlanguage(String s,String e, String i, String h,String p,String r, String l, String w)
@@ -89,8 +96,6 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
             }
            }
        });
-
-
         plus_y.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,20 +132,11 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
         _play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, Game.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                i.putExtra("X",_X.getText().toString());
-                i.putExtra("Y",_Y.getText().toString());
-                i.putExtra("win",win);
-                i.putExtra("lose",lose);
-                i.putExtra("replay",replay);
-                i.putExtra("Diff",String.valueOf(getdifficulty()));
-                if((Integer.parseInt(_X.getText().toString()) >=3 && Integer.parseInt(_X.getText().toString()) <=9) && (Integer.parseInt(_Y.getText().toString()) >=3 && Integer.parseInt(_Y.getText().toString()) <=18))
-                {
-                    startActivity(i);
-                    finish();
-                }
-                else { _error.setText("Size problem (verify your X and Y value)"); }
+                p.setVisibility(View.VISIBLE);
+                v.setVisibility(View.VISIBLE);
+                _play.setVisibility(View.INVISIBLE);
+                c.execute();
+
             }
         });
     }
@@ -158,5 +154,60 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
         }
         else return 1;
     }
+
+    private class Calculation extends AsyncTask<Void, Integer,Void>
+    {
+
+        @Override
+        protected void onPreExecute()
+        {
+            p.setProgress(0);
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values)
+        {
+            super.onProgressUpdate(values);
+            p.setProgress(values[0]);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            for(int i=0;i<=10;i++)
+            {
+                try{
+                    Thread.sleep(500L);}
+                catch(InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
+                publishProgress(i*10);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result)
+        {
+            super.onPostExecute(result);
+            Intent i = new Intent(MainActivity.this, Game.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            i.putExtra("X",_X.getText().toString());
+            i.putExtra("Y",_Y.getText().toString());
+            i.putExtra("win",win);
+            i.putExtra("lose",lose);
+            i.putExtra("replay",replay);
+            i.putExtra("Diff",String.valueOf(getdifficulty()));
+            if((Integer.parseInt(_X.getText().toString()) >=3 && Integer.parseInt(_X.getText().toString()) <=9) && (Integer.parseInt(_Y.getText().toString()) >=3 && Integer.parseInt(_Y.getText().toString()) <=18))
+            {
+                startActivity(i);
+                finish();
+
+            }
+            else { _error.setText("Size problem (verify your X and Y value)"); }
+        }
+    }
 }
+
 

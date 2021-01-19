@@ -13,6 +13,7 @@
         android:layout_width="177dp"
         android:layout_height="70dp"
         android:layout_marginTop="250dp"
+        android:clickable="false"
         android:text="@string/play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="140dp"
-        android:background="#902B2A2A"
+        android:background="#8F2B2A2A"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.35"
@@ -148,6 +149,7 @@
             android:clickable="true"
             android:focusable="true"
             app:srcCompat="@drawable/plus" />
+
     </LinearLayout>
 
     <TextView
@@ -207,6 +209,7 @@
             android:buttonTint="#FF0000"
             android:text="Hard"
             android:textColor="#FFFFFF" />
+
     </RadioGroup>
 
     <TextView
@@ -230,7 +233,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/view2">
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/setting"
@@ -243,5 +248,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_menu_preferences" />
+
+    <View
+        android:id="@+id/loadbackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#1C1C1C"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/p"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="215dp"
+        android:layout_height="381dp"
+        android:layout_weight="1"
+        android:scaleY="10"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
