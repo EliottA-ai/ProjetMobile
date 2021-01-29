@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -24,6 +25,7 @@ public class BlankFragment extends Fragment {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.languagefragment, container, false);
             language = view.findViewById(R.id.language);
+            view.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.my_animation));
             return view;
         }
 

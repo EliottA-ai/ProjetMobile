@@ -1,22 +1,20 @@
 package com.example.projet_hexagon;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.view.animation.AnimationUtils;
+import androidx.appcompat.app.AppCompatActivity;
+import android.media.MediaPlayer;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,13 +28,20 @@ public class MainActivity extends AppCompatActivity {
     private Calculation c;
     private View v;
 
+    private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.settings);
+        mediaPlayer2 = MediaPlayer.create(this, R.raw.blop);
+
         _X = findViewById(R.id.editTextNumberX);
+
         _Y = findViewById(R.id.editTextNumberY);
         _play = findViewById(R.id.play);
         _error = findViewById(R.id.error);
@@ -57,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         c = new Calculation();
+        _setting.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotation));
+
     }
 
 public void setlanguage(String s,String e, String i, String h,String p,String r, String l, String w)
@@ -82,6 +89,7 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
                 Bundle bundle = new Bundle();
                 BlankFragment fragment = new  BlankFragment();
                 fragment.setArguments(bundle);
+                mediaPlayer.start();
                 getSupportFragmentManager().beginTransaction().add(R.id.fragmcont, fragment).commit();
 
             }
@@ -90,7 +98,9 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
         minus_x.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-            if(Integer.parseInt(_X.getText().toString())>3)
+               minus_y.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.my_animation));
+
+               if(Integer.parseInt(_X.getText().toString())>3)
             {
                 _X.setText(Integer.parseInt(_X.getText().toString()) - 1);
             }
@@ -99,6 +109,8 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
         plus_y.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                plus_y.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.my_animation));
+
                 if(Integer.parseInt(_Y.getText().toString())<18)
                 {
                     int a = Integer.parseInt(_Y.getText().toString()) + 1;
@@ -110,6 +122,8 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
         plus_x.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                plus_x.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.my_animation));
+
                 if(Integer.parseInt(_X.getText().toString())<9)
                 {
                     int a = Integer.parseInt(_X.getText().toString()) + 1;
@@ -121,6 +135,8 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
         minus_y.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                minus_y.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.my_animation));
+
                 if(Integer.parseInt(_Y.getText().toString())>3)
                 {
                     int a = Integer.parseInt(_Y.getText().toString()) - 1;
@@ -134,7 +150,9 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
             public void onClick(View view) {
                 p.setVisibility(View.VISIBLE);
                 v.setVisibility(View.VISIBLE);
+                mediaPlayer2.start();
                 _play.setVisibility(View.INVISIBLE);
+
                 c.execute();
 
             }
@@ -154,6 +172,7 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
         }
         else return 1;
     }
+
 
     private class Calculation extends AsyncTask<Void, Integer,Void>
     {
@@ -201,6 +220,7 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
             i.putExtra("Diff",String.valueOf(getdifficulty()));
             if((Integer.parseInt(_X.getText().toString()) >=3 && Integer.parseInt(_X.getText().toString()) <=9) && (Integer.parseInt(_Y.getText().toString()) >=3 && Integer.parseInt(_Y.getText().toString()) <=18))
             {
+
                 startActivity(i);
                 finish();
 
