@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +32,8 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import android.media.MediaPlayer;
+
 
 
 public class Game extends AppCompatActivity {
@@ -52,6 +56,10 @@ public class Game extends AppCompatActivity {
 
 
 
+    private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer2;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +76,11 @@ public class Game extends AppCompatActivity {
         nbwin=findViewById(R.id.nbwin);
 
         _button = findViewById(R.id.button);
+
         _end = findViewById(R.id.lost);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.start);
+        mediaPlayer2 = MediaPlayer.create(this, R.raw.cowboy);
 
         Intent intent = getIntent();
         String X = intent.getStringExtra("X");
@@ -195,17 +207,20 @@ public class Game extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+        mediaPlayer2.start();
+
+
         nblose.setText(prefs.getString("lose", "0"));
         nbwin.setText(prefs.getString("win", "0"));
+
         _button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Game.this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(i);
+                mediaPlayer.start();
                 finish();
-
-
             }
         });
     }
@@ -349,7 +364,11 @@ public class Game extends AppCompatActivity {
             editor.apply();
         }
     }
+
+
+
     // #########################################################################################################
+
 }
 
 
