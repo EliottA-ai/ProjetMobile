@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView _error, _exp;
     public RadioButton easy,intermediate, hard;
     public String win,lose,replay;
-    private ProgressBar p;
+    private ProgressBar loading;
     private Calculation c;
     private View v;
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         hard=findViewById(R.id.Hard);
         _exp=findViewById(R.id.exp);
         _setting=findViewById(R.id.setting);
-        p=findViewById(R.id.p);
+        loading=findViewById(R.id.p);
         v=findViewById(R.id.loadbackground);
     }
 
@@ -148,7 +148,7 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
         _play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                p.setVisibility(View.VISIBLE);
+                loading.setVisibility(View.VISIBLE);
                 v.setVisibility(View.VISIBLE);
                 mediaPlayer2.start();
                 _play.setVisibility(View.INVISIBLE);
@@ -180,14 +180,14 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
         @Override
         protected void onPreExecute()
         {
-            p.setProgress(0);
+            loading.setProgress(0);
         }
 
         @Override
         protected void onProgressUpdate(Integer... values)
         {
             super.onProgressUpdate(values);
-            p.setProgress(values[0]);
+            loading.setProgress(values[0]);
         }
 
         @Override
@@ -196,7 +196,7 @@ public void setlanguage(String s,String e, String i, String h,String p,String r,
             for(int i=0;i<=10;i++)
             {
                 try{
-                    Thread.sleep(500L);}
+                    Thread.sleep(50L);}
                 catch(InterruptedException e)
                 {
                     e.printStackTrace();

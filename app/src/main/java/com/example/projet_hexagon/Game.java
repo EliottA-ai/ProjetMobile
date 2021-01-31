@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.nfc.Tag;
@@ -37,6 +38,11 @@ import android.media.MediaPlayer;
 
 public class Game extends AppCompatActivity {
 
+    public static int nbb;
+    private static ImageView _end;
+    private static SharedPreferences prefs;
+    private static SharedPreferences.Editor editor;
+    private static TextView nblose,nbwin;
     private RecyclerView hexaRcv;
     private RecyclerView.Adapter mAdapter;
     private HexaCase imageh;
@@ -47,8 +53,8 @@ public class Game extends AppCompatActivity {
     private ImageView _button = null;
     private int[] test;
     private int _X, _Y, _All;
-    private static ImageView _end;
-    public static int nbb;
+
+
 
     private MediaPlayer mediaPlayer;
     private MediaPlayer mediaPlayer2;
@@ -63,6 +69,11 @@ public class Game extends AppCompatActivity {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
+
+        prefs = getSharedPreferences("Nb of game", MODE_PRIVATE);
+        editor = prefs.edit();
+        nblose = findViewById(R.id.nblose);
+        nbwin=findViewById(R.id.nbwin);
 
         _button = findViewById(R.id.button);
 
@@ -93,6 +104,7 @@ public class Game extends AppCompatActivity {
                 int size = 1;
                 if ((position + 1) % (_X + ((_X - 1))) == 0) {
                     size = 2;
+
                 }
                 return size;
             }
@@ -102,7 +114,7 @@ public class Game extends AppCompatActivity {
         input = new ArrayList<>();
 
         numberofbomb = getnumberofbomb(_X, _Y, Integer.parseInt(Diff));
-        nbb=numberofbomb;
+        nbb = numberofbomb;
         //numberofbomb=2;
 
         int j = 0;
@@ -119,6 +131,9 @@ public class Game extends AppCompatActivity {
             input.add(imageh);
         }
 
+        setneighbors(input, _X, _Y, _All);
+
+/*
         for (int k = 0; k < _All; k++) //if bomb
         {
 
@@ -146,14 +161,14 @@ public class Game extends AppCompatActivity {
                     input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
                 }
 
-               /* //leftborder
-                else if ()
+               //leftborder
+                else if (k==9)
                 {
                     input.get(k + 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
                     input.get(k + _X).setNeighbors(input.get(k + _X).getNeighbors() + 1);
                     input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
 
-                    if ((k + 1) % (_X + ((_X - 1))) == 0))
+                    if ((k + 1) % (_X + ((_X - 1))) == 0)
                     {
                         input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
                         input.get(k + (_X - 1)).setNeighbors(input.get(k + (_X - 1)).getNeighbors() + 1);
@@ -161,19 +176,19 @@ public class Game extends AppCompatActivity {
 
                 }
                 //righborder
-                else if()
+                else if(k==8)
                 {
                     input.get(k - 1).setNeighbors(input.get(k + 1).getNeighbors() - 1);
                     input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
                     input.get(k + (_X - 1)).setNeighbors(input.get(k + (_X - 1)).getNeighbors() + 1);
 
-                    if (ligne plus petite)
+                    if ((k + 1) % (_X + ((_X - 1))) == 0)
                     {
                         input.get(k + _X).setNeighbors(input.get(k + _X).getNeighbors() + 1);
                         input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
                     }
 
-                }*/
+                }
                 else {
                     input.get(k - 1).setNeighbors(input.get(k - 1).getNeighbors() + 1);
                     input.get(k + 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
@@ -182,22 +197,22 @@ public class Game extends AppCompatActivity {
                     input.get(k + (_X - 1)).setNeighbors(input.get(k + (_X - 1)).getNeighbors() + 1);
                     input.get(k + _X).setNeighbors(input.get(k + _X).getNeighbors() + 1);
                 }
-
-
             }
-        }
-
+        }*/
         mAdapter = new MyAdapter(input, _X, _Y, width);
         hexaRcv.setAdapter(mAdapter);
-
-
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
+
         mediaPlayer2.start();
+
+
+        nblose.setText(prefs.getString("lose", "0"));
+        nbwin.setText(prefs.getString("win", "0"));
+
         _button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -209,8 +224,9 @@ public class Game extends AppCompatActivity {
             }
         });
     }
+    //#########################################################################################################
 
-    //Nombres de bombes selon la difficulte choisi
+    //###################################   Nombres de bombes selon la difficulte choisi   ###################################
     public int getnumberofbomb(int x, int y, int difficulty) {
         switch (difficulty) {
             case 2: //intermediate
@@ -221,8 +237,9 @@ public class Game extends AppCompatActivity {
                 return x * y / 7;
         }
     }
+    //#########################################################################################################
 
-    //Répartition des bombes aléatoirement dans un tableau
+    //###################################   Répartition des bombes aléatoirement dans un tableau   ###################################
     public int[] setbomblocalisation(int size, int nb) {
 
         int[] a = new int[nb];
@@ -242,87 +259,115 @@ public class Game extends AppCompatActivity {
         return a;
     }
 
-    /* public List<HexaCase> getneighbors(List<HexaCase> _input,int x, int y, int all) {
+    //#########################################################################################################
 
-         List<HexaCase> arrayofneighbors = new ArrayList<>();
+    //###################################   Creation du tableau du nombres de bobmbes voisines   ###################################
+    public void setneighbors(List<HexaCase> _input, int x, int y, int all) {
 
-         for (int k = 0; k < all; k++) //Placement des nombres de voisins
-         {
-             //first line
-             if (k < x) {
-                 if (k > 0) {
-                     arrayofneighbors.add(_input.get(k - 1));
-                     arrayofneighbors.add(_input.get(k + (x - 1)));
-                 }
-                 if (k != x - 1) {
-                     arrayofneighbors.add(_input.get(k + 1));
-                     arrayofneighbors.add(_input.get(k + x));
-                 }
-             }
-             //last line
-             else if (k > all - (x - 1)) {
-                 if (k > all - (x - 1))
-                     arrayofneighbors.add(_input.get(k - 1));
-                 if ((k < all - 1) || y % 2 == 0) {
-                     arrayofneighbors.add(_input.get(k + 1));
-                     arrayofneighbors.add(_input.get(k - (x - 1)));
-                 }
-                 arrayofneighbors.add(_input.get(k - x));
-             }
 
-                /* //leftborder
-                 else if ()
-                 {
-                     input.get(k + 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
-                     input.get(k + _X).setNeighbors(input.get(k + _X).getNeighbors() + 1);
-                     input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
+        for (int k = 0; k < _All; k++)
+        {
 
-                     if ((k + 1) % (_X + ((_X - 1))) == 0))
-                     {
-                         input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
-                         input.get(k + (_X - 1)).setNeighbors(input.get(k + (_X - 1)).getNeighbors() + 1);
-                     }
+            if (input.get(k).getBomb() == true) { // Si la case comporte une bombe on incrémente autour de celle-ci le nombre de bombes voisines :
 
-                 }
-                 //righborder
-                 else if()
-                 {
-                     input.get(k - 1).setNeighbors(input.get(k + 1).getNeighbors() - 1);
-                     input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
-                     input.get(k + (_X - 1)).setNeighbors(input.get(k + (_X - 1)).getNeighbors() + 1);
+                // Si la case est sur le bord du haut :
+                if (k < _X) {
+                    if (k > 0) {
+                        input.get(k - 1).setNeighbors(input.get(k - 1).getNeighbors() + 1);
+                        input.get(k + (_X - 1)).setNeighbors(input.get(k + (_X - 1)).getNeighbors() + 1);
+                    }
+                    if (k != _X - 1) {
+                        input.get(k + 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
+                        input.get(k + _X).setNeighbors(input.get(k + _X).getNeighbors() + 1);
+                    }
+                }
 
-                     if (ligne plus petite)
-                     {
-                         input.get(k + _X).setNeighbors(input.get(k + _X).getNeighbors() + 1);
-                         input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
-                     }
+                //Si la case est sur le bord du bas :
+                else if ((_Y%2==0 && k > _All - _X )|| (_Y%2!=0 && k >= _All -_X)) {
 
-                 }*//*
-            else {
-                arrayofneighbors.add(_input.get(k - 1));
-                arrayofneighbors.add(_input.get(k + 1));
-                arrayofneighbors.add(_input.get(k - (x - 1)));
-                arrayofneighbors.add(_input.get(k - x));
-                arrayofneighbors.add(_input.get(k + (x - 1)));
-                arrayofneighbors.add(_input.get(k + x));
+                 if(_Y%2==0) //petite ligne
+                    {
+                        if (k != _All-1) //Si different de la derniere case
+                        {
+                            input.get(k + 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
+                        }
+                        if ((((k+(_X-1))%((2*_X)-1))!=0) && (((k % ((2*_X)-1))!=0))) { //si je suis pas sur 1ere case
+                            input.get(k - 1).setNeighbors(input.get(k - 1).getNeighbors() + 1);
+                        }
+                        input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
+                        input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
+                    }
+                    else //grande ligne
+                    {
+                        if (k != _All-1) //Si different de la derniere case
+                        {
+                            input.get(k + 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
+                            input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
+                        }
+                        if ((((k+(_X-1))%((2*_X)-1))!=0) && (((k % ((2*_X)-1))!=0))) { //si je suis pas sur 1ere case
+                            input.get(k - 1).setNeighbors(input.get(k - 1).getNeighbors() + 1);
+                            input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
+                        }
+                    }
+
+                }
+
+                //Si la case est sur le bord gauche :
+                else  if ((((k+(_X-1))%((2*_X)-1))==0) || (((k % ((2*_X)-1))==0))) {
+                    input.get(k + 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
+                    input.get(k + _X).setNeighbors(input.get(k + _X).getNeighbors() + 1);
+                    input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
+
+                    if ((k + 1) % (_X + ((_X - 1))) == 0) {
+                        input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
+                        input.get(k + (_X - 1)).setNeighbors(input.get(k + (_X - 1)).getNeighbors() + 1);
+                    }
+
+                }
+                //Si la case est sur le bord droit :
+                else if ((((k+_X)%((2*_X)-1))==0) || ((((k+1) % ((2*_X)-1))==0)))
+                {
+                    input.get(k - 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
+                    input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
+                    input.get(k + (_X - 1)).setNeighbors(input.get(k + (_X - 1)).getNeighbors() + 1);
+
+                    if ((k + 1) % (_X + ((_X - 1))) == 0) {
+                        input.get(k + _X).setNeighbors(input.get(k + _X).getNeighbors() + 1);
+                        input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
+                    }
+                }
+                else { // Si la case n'est pas un contour :
+                    input.get(k - 1).setNeighbors(input.get(k - 1).getNeighbors() + 1);
+                    input.get(k + 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
+                    input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
+                    input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
+                    input.get(k + (_X - 1)).setNeighbors(input.get(k + (_X - 1)).getNeighbors() + 1);
+                    input.get(k + _X).setNeighbors(input.get(k + _X).getNeighbors() + 1);
+
+
+                }
             }
-
-            //_input.get(k + 1).setNeighbors(input.get(k + 1).getNeighbors() + 1);
-          // _input.get(k - 1).setNeighbors(input.get(k - 1).getNeighbors() + 1);
-          // _input.get(k - (_X - 1)).setNeighbors(input.get(k - (_X - 1)).getNeighbors() + 1);
-         //  _input.get(k - _X).setNeighbors(input.get(k - _X).getNeighbors() + 1);
         }
-        return arrayofneighbors;
-    }*/
+    }
+    // #########################################################################################################
+
+    //###################################  Affichage du logo victoire ou defaite et du nombre de parties gagnees ou perdues  ###################################
     public static void end(boolean end) {
         if (end == false) {
-            _end.setBackgroundResource(R.drawable.lose);
+           _end.setBackgroundResource(R.drawable.lose); //logo defaite
+            editor.putString("lose", String.valueOf(Integer.parseInt(nblose.getText().toString()) + 1)); //incrementation du nombre de parties perdues
+            editor.apply();
         }
         if (end == true) {
-            _end.setBackgroundResource(R.drawable.win);
+           _end.setBackgroundResource(R.drawable.win); //logo victoire
+            editor.putString("win", String.valueOf(Integer.parseInt(nbwin.getText().toString()) + 1)); //incrementation du nombre de parties gagnes
+            editor.apply();
         }
     }
 
+
+
+    // #########################################################################################################
 
 }
 
