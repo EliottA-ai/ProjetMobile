@@ -13,13 +13,13 @@ public class HexaCase {
 
 
     private ImageView _Image;
-    private boolean _bomb;
+    private boolean _bomb,_discover;
     private int _neighbors;
 
     public HexaCase(ImageView img, boolean bomb) {
         _bomb = bomb;
         _Image = img;
-
+        _discover=false;
 
     }
 
@@ -28,6 +28,9 @@ public class HexaCase {
     }
     public void  setNeighbors(int Neighbors) {_neighbors = Neighbors;}
     public int getNeighbors() {return _neighbors;}
+
+    public void  setdiscover() {_discover = true;}
+    public Boolean getdiscover() {return _discover;}
 
 
 }
