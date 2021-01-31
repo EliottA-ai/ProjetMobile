@@ -8,7 +8,10 @@
         android:id="@+id/hexa_rcv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/hexa_dp" />
+        android:layout_marginStart="@dimen/hexa_dp"
+        android:layout_marginTop="@dimen/hexa_dp"
+        android:layout_marginEnd="@dimen/hexa_dp"
+        android:layout_marginBottom="@dimen/hexa_dp" />
 
     <ImageView
         android:id="@+id/button"
@@ -27,10 +30,53 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="322dp"
+        android:backgroundTint="#31FFFFFF"
         android:textAlignment="center"
         android:textColor="#FF0000"
         android:textSize="80sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/nbwin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="115dp"
+        android:layout_marginBottom="30dp"
+        android:text="0"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/nblose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="30dp"
+        android:text="0"
+        android:textSize="36sp" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="150dp"
+        android:layout_height="131dp"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="100dp"
+        app:srcCompat="@drawable/win" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="111dp"
+        android:layout_height="125dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="106dp"
+        app:srcCompat="@drawable/lose" />
 
 </RelativeLayout>
 
